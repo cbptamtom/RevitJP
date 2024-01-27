@@ -105,9 +105,13 @@
     <Compile Include="Utilities\Btn.cs" />
     <Compile Include="Utilities\RelayCommand.cs" />
     <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="ViewModels\ApplyFilterViewModel.cs" />
     <Compile Include="ViewModels\DeleteFilterViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\FilterManagerViewModel.cs" />
+    <Compile Include="Views\ApplyFilter.xaml.cs">
+      <DependentUpon>ApplyFilter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DeleteFilter.xaml.cs">
       <DependentUpon>DeleteFilter.xaml</DependentUpon>
     </Compile>
@@ -194,6 +198,10 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\ApplyFilter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DeleteFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -261,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\icons8-clear-filters-96.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\icons8-view-64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.5.0.0.2012\build\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.5.0.0.2012\build\Xamarin.Forms.targets')" />

@@ -258,15 +258,15 @@ namespace PresentationFilter.ViewModels
                 List<string> existingFilterNames = new List<string>();
 
                 var filteredFilterModels = FilterModel
-                    .Where(filterModel => filterModel.FilterRule == "符号")
+.Where(filterModel => filterModel.FilterRule == "符号")
                     .ToList();
 
                 var filterModelsToCreateStartLevelOffset = FilterModel
-                    .Where(filterModel => filterModel.FilterRule == "Start Level Offset")
+.Where(filterModel => filterModel.FilterRule == "Start Level Offset")
                     .ToList();
 
                 var filterModelsToCreateHeightOffsetFromLevel = FilterModel
-                    .Where(filterModel => filterModel.FilterRule == "Height Offset From Level")
+.Where(filterModel => filterModel.FilterRule == "Height Offset From Level")
                     .ToList();
 
 

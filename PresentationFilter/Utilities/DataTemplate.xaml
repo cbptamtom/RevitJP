@@ -13,7 +13,9 @@
     <DataTemplate DataType="{x:Type vm:DeleteFilterViewModel}">
         <view:DeleteFilter />
     </DataTemplate>
-
+    <DataTemplate DataType="{x:Type vm:ApplyFilterViewModel}">
+        <view:ApplyFilter />
+    </DataTemplate>
 
 
 

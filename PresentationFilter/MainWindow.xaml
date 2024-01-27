@@ -74,6 +74,12 @@
                             <TextBlock Style="{StaticResource Text_Style}" Text="Remove Filter" />
                         </Grid>
                     </Menu:Btn>
+                    <Menu:Btn Command="{Binding ApplyFilterCommand}" Style="{StaticResource BtnStyle}">
+                        <Grid>
+                            <Image Source="Images/icons8-view-64.png" Style="{StaticResource Image_Style}" />
+                            <TextBlock Style="{StaticResource Text_Style}" Text="Apply Filter" />
+                        </Grid>
+                    </Menu:Btn>
 
                     <!--<Menu:Btn Command="{Binding GeometryCommand}" Style="{StaticResource BtnStyle}">
                     <Grid>
