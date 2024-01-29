@@ -251,6 +251,29 @@ public static class DocumentService
         ParameterFilterElement parameterFilter = ParameterFilterElement.Create(_document, filterName, categoryIds, filter);
     }
 
+    private static void CreateFilterWithRule(string filterName, List<ElementId> categoryIds, Parameter sharedParameter1, double sharedParameterValue1, Parameter sharedParameter2, double sharedParameterValue2)
+    {
+        // Quy tắc cho sharedParameter1
+        ParameterValueProvider valueProvider1 = new ParameterValueProvider(sharedParameter1.Id);
+        FilterNumericEquals evaluator1 = new FilterNumericEquals();
+        FilterRule rule1 = new FilterDoubleRule(valueProvider1, evaluator1, sharedParameterValue1, 0.001);
+
+        // Quy tắc cho sharedParameter2
+        ParameterValueProvider valueProvider2 = new ParameterValueProvider(sharedParameter2.Id);
+        FilterNumericEquals evaluator2 = new FilterNumericEquals();
+        FilterRule rule2 = new FilterDoubleRule(valueProvider2, evaluator2, sharedParameterValue2, 0.001);
+
+
+        // Tạo một ElementParameterFilter từ ListRule
+        ElementParameterFilter filter = new ElementParameterFilter(new List<FilterRule> { rule1, rule2 }, false);
+
+        // Tạo ParameterFilterElement và đặt ElementFilter
+        ParameterFilterElement parameterFilter = ParameterFilterElement.Create(_document, filterName, categoryIds, filter);
+    }
+
+
+
+
 
     public static void CreateViewFilterNameMarkSharedParameter(string filterName, List<string> categoryNames, string guidofParameter, string sharedParameterValue)
     {
@@ -286,6 +309,21 @@ public static class DocumentService
             if (categoryIds.Count > 0)
             {
                 CreateFilterWithRule(filterName, categoryIds, parameter, sharedParameterValue);
+            }
+
+            transaction.Commit();
+        }
+    }
+    public static void CreateViewFilterNameMarkSharedParameter(string filterName, List<string> categoryNames, Parameter sharedParameter1, double sharedParameterValue1, Parameter sharedParameter2, double sharedParameterValue2)
+    {
+        using (Transaction transaction = new Transaction(_document, "Create View Filter"))
+        {
+            transaction.Start();
+
+            List<ElementId> categoryIds = FindCategoryIdsByNames(categoryNames);
+            if (categoryIds.Count > 0)
+            {
+                CreateFilterWithRule(filterName, categoryIds, sharedParameter1, sharedParameterValue1, sharedParameter2, sharedParameterValue2);
             }
 
             transaction.Commit();

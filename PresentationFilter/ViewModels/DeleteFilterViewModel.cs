@@ -42,7 +42,13 @@ namespace PresentationFilter.ViewModels
                 {
                     if (f.Selected)
                     {
-                        _document.Delete(f.filterElem.Id);
+                        using (Transaction transaction = new Transaction(_document, "Delete Filters"))
+                        {
+                            transaction.Start();
+                            _document.Delete(f.filterElem.Id);
+                            MessageBox.Show("Delete success");
+                            transaction.Commit();
+                        }
 
                     }
                 }
@@ -62,7 +68,7 @@ namespace PresentationFilter.ViewModels
             // Lấy tất cả các phần tử kiểu ParameterFilterElement
             FilteredElementCollector collector = new FilteredElementCollector(_document);
             ICollection<Element> filterElements = collector.OfClass(typeof(ParameterFilterElement)).ToElements();
-
+            filterElements = filterElements.OrderBy(f => f.Name).ToList();
             // Chuyển các phần tử thành các mục FilterterDel và thêm vào danh sách
             foreach (ParameterFilterElement filterElement in filterElements)
             {

@@ -353,7 +353,17 @@ namespace PresentationFilter.ViewModels
                         }
                         else if (sharedParameter is BuiltInParameter sharedParameterEnum)
                         {
-                            DocumentService.CreateViewFilterNameMarkSharedParameter(filterModel.FilterName, new List<string> { categoryName }, filterModel.Element.get_Parameter(sharedParameterEnum), filterModel.Elevation);
+                            if (categoryName == "Structural Framing")
+                            {
+                                DocumentService.CreateViewFilterNameMarkSharedParameter(filterModel.FilterName, new List<string> { categoryName },
+                                    filterModel.Element.get_Parameter(BuiltInParameter.STRUCTURAL_BEAM_END0_ELEVATION), filterModel.Elevation,
+                                    filterModel.Element.get_Parameter(BuiltInParameter.STRUCTURAL_BEAM_END1_ELEVATION), filterModel.Elevation);
+                            }
+                            else
+                            {
+                                // For other categories, only add the specified shared parameter
+                                DocumentService.CreateViewFilterNameMarkSharedParameter(filterModel.FilterName, new List<string> { categoryName }, filterModel.Element.get_Parameter(sharedParameterEnum), filterModel.Elevation);
+                            }
                         }
                         createdFilterNames.Add(filterModel.FilterName);
                     }
@@ -364,6 +374,7 @@ namespace PresentationFilter.ViewModels
                 }
             }
         }
+
 
 
 

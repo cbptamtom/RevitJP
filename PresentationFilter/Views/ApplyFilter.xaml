@@ -35,26 +35,41 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="143*" />
+                    <ColumnDefinition Width="256*" />
+                    <ColumnDefinition Width="160*" />
+                    <ColumnDefinition Width="177*" />
                 </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.ColumnSpan="2"
+                    Width="156"
+                    Height="18"
+                    Margin="15,0,0,0"
+                    Style="{StaticResource Text_Info}"
+                    Text="St.Framing Template" />
+                <TextBlock
+                    Grid.Column="2"
+                    Width="149"
+                    Height="18"
+                    Margin="10,0,0,0"
+                    Style="{StaticResource Text_Info}"
+                    Text="Filter Name Begin With" />
+
                 <ComboBox
-                    Width="360"
-                    Margin="5,0,5,0"
-                    HorizontalAlignment="Left"
+                    Grid.Column="1"
+                    Width="236"
+                    Height="22"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     DisplayMemberPath="Name"
                     ItemsSource="{Binding ViewTemplate}"
-                    SelectedItem="{Binding ExportOptionModel.SelectedConvertLinkedFile}" />
+                    SelectedItem="{Binding SelectedViewTemplate}" />
 
-                <ComboBox Grid.Row="1"
-                          Width="360"
-                          Margin="5,0,5,0"
-                          HorizontalAlignment="Left"
-                          VerticalAlignment="Center"
-                          DisplayMemberPath="Name"
-                          ItemsSource="{Binding ParameterFilterElement}"
-                          SelectedItem="{Binding ExportOptionModel.SelectedConvertLinkedFile}" />
+                <TextBox
+                    Grid.Column="3"
+                    Margin="0,20,0,20"
+                    Style="{StaticResource TextBoxStyle}"
+                    Text="{Binding FilterNameBeginWith}" />
             </Grid>
 
         </Border>
@@ -64,8 +79,8 @@
             Width="124"
             Margin="0,4,30,20"
             HorizontalAlignment="Right"
-            Command="{Binding InitFilterCommand}"
-            Content="Initialize Filters"
+            Command="{Binding ApplyFilters}"
+            Content="Apply Filters"
             Style="{StaticResource ButtonApplyStyle}" />
     </Grid>
 
