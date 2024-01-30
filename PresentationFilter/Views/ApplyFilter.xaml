@@ -31,7 +31,8 @@
             CornerRadius="12">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="70" />
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="50" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -46,9 +47,10 @@
                     Height="18"
                     Margin="15,0,0,0"
                     Style="{StaticResource Text_Info}"
-                    Text="St.Framing Template" />
+                    Text="Target View Template" />
                 <TextBlock
-                    Grid.Column="2"
+                    Grid.Row="1"
+                    Grid.Column="0"
                     Width="149"
                     Height="18"
                     Margin="10,0,0,0"
@@ -66,10 +68,11 @@
                     SelectedItem="{Binding SelectedViewTemplate}" />
 
                 <TextBox
-                    Grid.Column="3"
-                    Margin="0,20,0,20"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Width="236"
                     Style="{StaticResource TextBoxStyle}"
-                    Text="{Binding FilterNameBeginWith}" />
+                    Text="{Binding FilterNameBeginWith}" Margin="10,8,10,8" />
             </Grid>
 
         </Border>

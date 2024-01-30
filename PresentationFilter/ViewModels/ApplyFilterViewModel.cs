@@ -32,7 +32,7 @@ namespace PresentationFilter.ViewModels
             get { return _SelectedViewTemplate; }
             set { SetProperty(ref _SelectedViewTemplate, value); }
         }
-        private string _FilterNameBeginWith = "梁レベル/Structual Framing Level_FL";
+        private string _FilterNameBeginWith = "スラブ符号/Slab Mark";
         public string FilterNameBeginWith
         {
             get { return _FilterNameBeginWith; }
@@ -97,19 +97,24 @@ namespace PresentationFilter.ViewModels
                     HashSet<Color> usedColors = new HashSet<Color>();
 
                     double reductionFactor = 0.7; // Giảm 30% độ đậm
-                    foreach (var item in ParameterFilterElement)
+                    try
                     {
-                        Color currentColor = allColors[colorIndex % allColors.Count];
-                        Color reducedColor = ReduceSaturation(currentColor, reductionFactor);
+                        foreach (var item in ParameterFilterElement)
+                        {
+                            Color currentColor = allColors[colorIndex % allColors.Count];
+                            Color reducedColor = ReduceSaturation(currentColor, reductionFactor);
+                            Filter(SelectedViewTemplate, item, _fillPattern, reducedColor);
+                            colorIndex++;
+                        }
+                        MessageBox.Show("Success");
+                    }
+                    catch (Exception ex)
+                    {
 
-                        Filter(SelectedViewTemplate, item, _fillPattern, reducedColor);
+                        MessageBox.Show(ex.Message);
 
-                        colorIndex++;
                     }
 
-                    // Function to convert HSL to RGB
-
-                    MessageBox.Show("Success");
                     transaction.Commit();
                 }
                 _transactionGroup.Commit();
