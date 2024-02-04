@@ -251,6 +251,16 @@ public static class DocumentService
         ParameterFilterElement parameterFilter = ParameterFilterElement.Create(_document, filterName, categoryIds, filter);
     }
 
+
+    /// <summary>
+    ///  Equel rule with 2 parameter
+    /// </summary>
+    /// <param name="filterName"></param>
+    /// <param name="categoryIds"></param>
+    /// <param name="sharedParameter1"></param>
+    /// <param name="sharedParameterValue1"></param>
+    /// <param name="sharedParameter2"></param>
+    /// <param name="sharedParameterValue2"></param>
     private static void CreateFilterWithRule(string filterName, List<ElementId> categoryIds, Parameter sharedParameter1, double sharedParameterValue1, Parameter sharedParameter2, double sharedParameterValue2)
     {
         // Quy tắc cho sharedParameter1
@@ -271,6 +281,35 @@ public static class DocumentService
         ParameterFilterElement parameterFilter = ParameterFilterElement.Create(_document, filterName, categoryIds, filter);
     }
 
+
+
+    /// <summary>
+    ///  Equel rule with 2 parameter (equal and no has value)
+    /// </summary>
+    /// <param name="filterName"></param>
+    /// <param name="categoryIds"></param>
+    /// <param name="sharedParameter1"></param>
+    /// <param name="sharedParameterValue1"></param>
+    /// <param name="sharedParameter2"></param>
+    /// <param name="sharedParameterValue2"></param>
+    private static void CreateFilterWithRule1(string filterName, List<ElementId> categoryIds, Parameter sharedParameter1, double sharedParameterValue1, Parameter sharedParameter2)
+    {
+        // Quy tắc cho sharedParameter1
+        ParameterValueProvider valueProvider1 = new ParameterValueProvider(sharedParameter1.Id);
+        FilterNumericEquals evaluator1 = new FilterNumericEquals();
+        FilterRule rule1 = new FilterDoubleRule(valueProvider1, evaluator1, sharedParameterValue1, 0.001);
+
+        // Quy tắc cho sharedParameter2
+        ParameterValueProvider valueProvider2 = new ParameterValueProvider(sharedParameter2.Id);
+        HasNoValueFilterRule evaluator2 = new HasNoValueFilterRule(sharedParameter2.Id);
+        //FilterRule rule2 = new FilterRule().create
+
+        // Tạo một ElementParameterFilter từ ListRule
+        ElementParameterFilter filter = new ElementParameterFilter(new List<FilterRule> { rule1, evaluator2 }, false);
+
+        // Tạo ParameterFilterElement và đặt ElementFilter
+        ParameterFilterElement parameterFilter = ParameterFilterElement.Create(_document, filterName, categoryIds, filter);
+    }
 
 
 
@@ -330,6 +369,20 @@ public static class DocumentService
         }
     }
 
+    public static void CreateViewFilterNameMarkSharedParameter(string filterName, List<string> categoryNames, Parameter sharedParameter1, double sharedParameterValue1, Parameter sharedParameter2)
+    {
+        using (Transaction transaction = new Transaction(_document, "Create View Filter"))
+        {
+            transaction.Start();
 
+            List<ElementId> categoryIds = FindCategoryIdsByNames(categoryNames);
+            if (categoryIds.Count > 0)
+            {
+                CreateFilterWithRule1(filterName, categoryIds, sharedParameter1, sharedParameterValue1, sharedParameter2);
+            }
+
+            transaction.Commit();
+        }
+    }
 
 }

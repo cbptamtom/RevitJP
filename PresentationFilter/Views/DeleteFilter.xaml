@@ -38,49 +38,85 @@
         Text="VIEW FILTERS" />-->
         <GroupBox Grid.Row="0">
             <GroupBox.Header>
-                <TextBlock
-                    FontWeight="Bold"
-                    Foreground="White"
-                    Text="VIEW FILTERS" />
-            </GroupBox.Header>
-            <ListBox
-                x:Name="lbViews3D"
-                Margin="0,5,0,5"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
-                Background="Transparent"
-                BorderThickness="0"
-                ItemsSource="{Binding SampleItems}"
-                PreviewKeyDown="lbViews3D_PreviewKeyDown"
-                PreviewKeyUp="lbViews3D_PreviewKeyUp"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                SelectionMode="Extended">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox
-                            Background="Transparent"
-                            Click="CheckBox_Click"
-                            Content="{Binding Name}"
-                            FontFamily="Rubik Medium"
-                            FontSize="14"
-                            Foreground="White"
-                            IsChecked="{Binding Selected, Mode=TwoWay}"
-                            Style="{StaticResource CheckBoxStyle}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                <TextBlock FontWeight="Bold" Foreground="White">
+                    <Run Text="VIEW FILTERS" />
+                    <Run Text=" (" />
+                    <Run Text="{Binding SampleItemsCount}" />
+                    <Run Text=")" />
 
+                </TextBlock>
+            </GroupBox.Header>
+
+            <DataGrid
+                AutoGenerateColumns="False"
+                Background="{x:Null}"
+                BorderBrush="{x:Null}"
+                Foreground="{x:Null}"
+                HeadersVisibility="Column"
+                ItemsSource="{Binding SampleItems}"
+                RowBackground="{x:Null}"
+                Style="{StaticResource DataGridStyle}">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="*" Header="Filters">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="100" Header="Delete">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox
+                                    HorizontalAlignment="Center"
+                                    IsChecked="{Binding Selected, Mode=TwoWay}"
+                                    Style="{DynamicResource CheckBoxStyle}" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+
+
+                </DataGrid.Columns>
+
+
+
+            </DataGrid>
         </GroupBox>
-        <Button
+        <StackPanel
             Grid.Row="1"
-            Width="124"
-            Height="50"
-            Margin="30,0"
             HorizontalAlignment="Right"
-            VerticalAlignment="Center"
-            Command="{Binding DelFilterCommand}"
-            Content="Delete Filters"
-            Style="{StaticResource ButtonApplyStyle}" />
+            Orientation="Horizontal">
+            <Button
+                Width="124"
+                Height="50"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{Binding UnSelectAllCommand}"
+                Content="Deselect All"
+                Style="{StaticResource ButtonApplyStyle}" />
+            <Button
+                Width="124"
+                Height="50"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{Binding SelectAllCommand}"
+                Content="Select All"
+                Style="{StaticResource ButtonApplyStyle}" />
+            <Button
+                Grid.Row="1"
+                Width="124"
+                Height="50"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{Binding DelFilterCommand}"
+                Content="Delete Filters"
+                Style="{StaticResource ButtonApplyStyle}" />
+        </StackPanel>
+
 
     </Grid>
 </UserControl>

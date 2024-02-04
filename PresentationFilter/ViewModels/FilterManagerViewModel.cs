@@ -1,4 +1,5 @@
-﻿using Autodesk.Revit.DB;
+﻿
+using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using PresentationFilter.Models;
 using PresentationFilter.Utilities;
@@ -358,6 +359,12 @@ namespace PresentationFilter.ViewModels
                                 DocumentService.CreateViewFilterNameMarkSharedParameter(filterModel.FilterName, new List<string> { categoryName },
                                     filterModel.Element.get_Parameter(BuiltInParameter.STRUCTURAL_BEAM_END0_ELEVATION), filterModel.Elevation,
                                     filterModel.Element.get_Parameter(BuiltInParameter.STRUCTURAL_BEAM_END1_ELEVATION), filterModel.Elevation);
+                            }
+                            else if (categoryName == "Floors")
+                            {
+                                DocumentService.CreateViewFilterNameMarkSharedParameter(filterModel.FilterName, new List<string> { categoryName },
+                                    filterModel.Element.get_Parameter(sharedParameterEnum), filterModel.Elevation,
+                                    filterModel.Element.get_Parameter(BuiltInParameter.STRUCTURAL_ELEVATION_AT_TOP));
                             }
                             else
                             {
