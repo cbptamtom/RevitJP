@@ -30,8 +30,33 @@ namespace PresentationFilter.ViewModels
         public View SelectedViewTemplate
         {
             get { return _SelectedViewTemplate; }
-            set { SetProperty(ref _SelectedViewTemplate, value); }
+            set
+            {
+                if (SetProperty(ref _SelectedViewTemplate, value))
+                {
+                    UpdateFilters();
+                }
+
+            }
         }
+
+
+
+        private ObservableCollection<OverrideGraphicSettings> _FilterOverrides;
+        public ObservableCollection<OverrideGraphicSettings> FilterOverrides
+        {
+            get { return _FilterOverrides; }
+            set { SetProperty(ref _FilterOverrides, value); }
+        }
+
+        private List<ParameterFilterElement> _Filters;
+        public List<ParameterFilterElement> Filters
+        {
+            get { return _Filters; }
+            set { SetProperty(ref _Filters, value); }
+        }
+
+
         private string _FilterNameBeginWith = "スラブ符号/Slab Mark";
         public string FilterNameBeginWith
         {
@@ -61,64 +86,66 @@ namespace PresentationFilter.ViewModels
             _fillPattern = GetFillPatternElements(_document);
 
 
+            FilterOverrides = GetFilterOverridesForSelectedView(SelectedViewTemplate);
 
+            MessageBox.Show(FilterOverrides[0].ToString());
             ApplyFilters = new DelegateCommand(() =>
-            {
-                if (!_transactionGroup.HasStarted())
-                {
-                    return;
-                }
-                using (Transaction transaction = new Transaction(_document, "Create View Filter"))
-                {
-                    transaction.Start();
-                    Color[] basicColors = new Color[]
-                        {
-                            new Color(255, 0, 0),   // Red
-                            new Color(255, 165, 0), // Orange
-                            new Color(255, 255, 0), // Yellow
-                            new Color(0, 255, 0),   // Green
-                            new Color(0, 0, 255),   // Blue
-                            new Color(128, 0, 128)  // Purple
-                            // Thêm màu cơ bản khác nếu cần
-                        };
+                                                    {
+                                                        if (!_transactionGroup.HasStarted())
+                                                        {
+                                                            return;
+                                                        }
+                                                        using (Transaction transaction = new Transaction(_document, "Create View Filter"))
+                                                        {
+                                                            transaction.Start();
+                                                            Color[] basicColors = new Color[]
+                                                {
+                                        new Color(255, 0, 0),   // Red
+                                        new Color(255, 165, 0), // Orange
+                                        new Color(255, 255, 0), // Yellow
+                                        new Color(0, 255, 0),   // Green
+                                        new Color(0, 0, 255),   // Blue
+                                        new Color(128, 0, 128)  // Purple
+                                                                // Thêm màu cơ bản khác nếu cần
+                                                    };
 
-                    List<Color> allColors = new List<Color>();
+                                                            List<Color> allColors = new List<Color>();
 
 
-                    // Lặp lại mảng màu cơ bản nhiều lần để đủ 50 màu
-                    for (int i = 0; i < 50; i++)
-                    {
-                        allColors.AddRange(basicColors);
-                    }
+                                                            // Lặp lại mảng màu cơ bản nhiều lần để đủ 50 màu
+                                                            for (int i = 0; i < 50; i++)
+                                                            {
+                                                                allColors.AddRange(basicColors);
+                                                            }
 
-                    int colorIndex = 0;
+                                                            int colorIndex = 0;
 
-                    Random random = new Random();
-                    HashSet<Color> usedColors = new HashSet<Color>();
+                                                            Random random = new Random();
+                                                            HashSet<Color> usedColors = new HashSet<Color>();
 
-                    double reductionFactor = 0.7; // Giảm 30% độ đậm
-                    try
-                    {
-                        foreach (var item in ParameterFilterElement)
-                        {
-                            Color currentColor = allColors[colorIndex % allColors.Count];
-                            Color reducedColor = ReduceSaturation(currentColor, reductionFactor);
-                            Filter(SelectedViewTemplate, item, _fillPattern, reducedColor);
-                            colorIndex++;
-                        }
-                        MessageBox.Show("Success");
-                    }
-                    catch (Exception ex)
-                    {
+                                                            double reductionFactor = 0.7; // Giảm 30% độ đậm
+                                                            try
+                                                            {
+                                                                foreach (var item in ParameterFilterElement)
+                                                                {
+                                                                    Color currentColor = allColors[colorIndex % allColors.Count];
+                                                                    Color reducedColor = ReduceSaturation(currentColor, reductionFactor);
+                                                                    Filter(SelectedViewTemplate, item, _fillPattern, reducedColor);
+                                                                    colorIndex++;
+                                                                }
+                                                                MessageBox.Show("Success");
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
 
-                        MessageBox.Show(ex.Message);
+                                                                MessageBox.Show(ex.Message);
 
-                    }
+                                                            }
 
-                    transaction.Commit();
-                }
-                _transactionGroup.Commit();
-            });
+                                                            transaction.Commit();
+                                                        }
+                                                        _transactionGroup.Commit();
+                                                    });
 
         }
 
@@ -234,6 +261,34 @@ namespace PresentationFilter.ViewModels
             return p;
         }
 
+
+        private void UpdateFilters()
+        {
+            if (SelectedViewTemplate != null)
+            {
+                FilterOverrides = GetFilterOverridesForSelectedView(SelectedViewTemplate);
+            }
+        }
+
+        private ObservableCollection<OverrideGraphicSettings> GetFilterOverridesForSelectedView(View SelectedViewTemplate)
+        {
+            ObservableCollection<OverrideGraphicSettings> overrides = new ObservableCollection<OverrideGraphicSettings>();
+
+            if (SelectedViewTemplate != null)
+            {
+                // Lấy danh sách FilterOverrides từ SelectedViewTemplate
+                var filters = SelectedViewTemplate.GetFilters();
+
+                foreach (var elementId in filters)
+                {
+                    var overrideSettings = SelectedViewTemplate.GetFilterOverrides(elementId);
+                    overrides.Add(overrideSettings);
+                }
+
+            }
+
+            return overrides;
+        }
 
     }
 }

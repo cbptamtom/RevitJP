@@ -36,14 +36,7 @@
                 <Grid Margin="20,20,-26,-25">
                     <TextBlock Style="{StaticResource Text_Info}">JAPAN PROJECT</TextBlock>
                 </Grid>
-
-
             </Grid>
-
-
-
-
-
 
         </Border>
 
